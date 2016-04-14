@@ -1,0 +1,65 @@
+﻿<%@ Page Title="Courses" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Courses.aspx.cs" Inherits="WebApplicationForms.Courses" %>
+<%@ Import Namespace="System.Drawing" %>
+<%@ Import Namespace="System.Drawing.Text" %>
+<%@ Import Namespace="System.Drawing.Drawing2D" %>
+<%@ Import Namespace="System.Drawing.Imaging" %>
+
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <asp:updatepanel runat="server">
+        <ContentTemplate>
+            <table style="width:100%">
+                <tr style="border: 1px solid black">
+                    <td colspan="3" style="border: 1px solid black">
+                        <div style="text-align: center">
+                            <h2>Electrical and Computer Engineering <%: Title %></h2>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="border: 1px solid black">
+                    <td id="fieldlist-col-name" style="width:20%" class="col-name">
+                        <div style="text-align: center">
+                            <h3>Courses</h3>
+                        </div>
+                    </td>
+                    <td id="pathcanvas-col-name" style="width:80%" class="col-name">
+                        <div style="text-align: center">
+                            <h3>Path</h3>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="border: 1px solid black">
+                    <td style="width:20%; vertical-align: top; border: 1px solid black">
+                        <div id="fieldlist" style="background-color:transparent; overflow-y: scroll; height: 700px">
+                            <asp:TreeView ID="treeViewCourses"
+                                RootNodeStyle-ImageUrl="~/Images/graduate_icon.png"
+                                ParentNodeStyle-ImageUrl="~/Images/part_icon.png"
+                                LeafNodeStyle-ImageUrl="~/Images/study_icon.png"
+                                ShowLines="false"
+                                ForeColor="Purple"
+                                OnSelectedNodeChanged="TreeViewCourses_SelectedNodeChanged"
+                                runat="server">
+                                <NodeStyle Font-Size="10pt" ForeColor="Purple"/>
+                                <ParentNodeStyle Font-Bold="True" Font-Size="12pt"/>
+                                <RootNodeStyle Font-Bold="True" Font-Size="12pt"/>
+                            </asp:TreeView>
+                        </div>
+                    </td>
+                    <td style="width:80%; height:100%; vertical-align: top; border: 1px solid black"; rowspan="2">
+                        <div id="coursepathpanel" style="height: 1024px">
+                        </div>
+                    </td>
+                </tr>
+                <tr style="border: 1px solid black">
+                    <td style="vertical-align: top">
+                        <div style="width:400px; height:324px;overflow-y: scroll">
+                            <table id="legend" 
+                                class="legend-table">
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </ContentTemplate>
+    </asp:updatepanel>
+
+</asp:Content>
