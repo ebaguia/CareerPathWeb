@@ -50,6 +50,35 @@ namespace WebApplicationForms.Controller
             }
         }
 
+        private Course createCourse(SQLiteDataReader dataReader)
+        {
+            Course course = null;
+
+            try
+            {
+                course = new Course(dataReader["ID"].ToString(),
+                        (int)dataReader["YR"],
+                        (int)dataReader["SEM"],
+                        dataReader["NAME"].ToString(),
+                        dataReader["DESC"].ToString(),
+                        (int)dataReader["POINTS"],
+                        dataReader["ACADEMICORG"].ToString(),
+                        dataReader["ACADEMICGROUP"].ToString(),
+                        dataReader["COURSECOMP"].ToString(),
+                        dataReader["GRADINGBASIS"].ToString(),
+                        dataReader["TYPOFFERED"].ToString(),
+                        dataReader["REMARKS"].ToString(),
+                        dataReader["CAREERID"].ToString(),
+                        (int)dataReader["COMPULSORY"]);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return course;
+        }
+
         public void executeQuery(string queryStatement)
         {
             try
@@ -105,20 +134,7 @@ namespace WebApplicationForms.Controller
                         Course finalCourse = null;
                         while (dataReaderTemp2.Read())
                         {
-                            finalCourse = new Course(dataReaderTemp2["ID"].ToString(),
-                                    (int)dataReaderTemp2["YR"],
-                                    (int)dataReaderTemp2["SEM"],
-                                    dataReaderTemp2["NAME"].ToString(),
-                                    dataReaderTemp2["DESC"].ToString(),
-                                    (int)dataReaderTemp2["POINTS"],
-                                    dataReaderTemp2["ACADEMICORG"].ToString(),
-                                    dataReaderTemp2["ACADEMICGROUP"].ToString(),
-                                    dataReaderTemp2["COURSECOMP"].ToString(),
-                                    dataReaderTemp2["GRADINGBASIS"].ToString(),
-                                    dataReaderTemp2["TYPOFFERED"].ToString(),
-                                    dataReaderTemp2["REMARKS"].ToString(),
-                                    dataReaderTemp2["CAREERID"].ToString(),
-                                    (int)dataReaderTemp2["COMPULSORY"]);
+                            finalCourse = createCourse(dataReaderTemp2);
 
                             // Retrieve all pre req courses
                             //
@@ -137,20 +153,7 @@ namespace WebApplicationForms.Controller
 
                                     while (dataReaderTemp5.Read())
                                     {
-                                        Course preReq = new Course(dataReaderTemp5["ID"].ToString(),
-                                            (int)dataReaderTemp5["YR"],
-                                            (int)dataReaderTemp5["SEM"],
-                                            dataReaderTemp5["NAME"].ToString(),
-                                            dataReaderTemp5["DESC"].ToString(),
-                                            (int)dataReaderTemp5["POINTS"],
-                                            dataReaderTemp5["ACADEMICORG"].ToString(),
-                                            dataReaderTemp5["ACADEMICGROUP"].ToString(),
-                                            dataReaderTemp5["COURSECOMP"].ToString(),
-                                            dataReaderTemp5["GRADINGBASIS"].ToString(),
-                                            dataReaderTemp5["TYPOFFERED"].ToString(),
-                                            dataReaderTemp5["REMARKS"].ToString(),
-                                            dataReaderTemp5["CAREERID"].ToString(),
-                                            (int)dataReaderTemp5["COMPULSORY"]);
+                                        Course preReq = createCourse(dataReaderTemp5);
 
                                         finalCourse.preReqCourses.Add(preReq);
                                     }
@@ -231,20 +234,7 @@ namespace WebApplicationForms.Controller
                     Course finalCourse = null;
                     while (dataReaderTemp.Read())
                     {
-                        finalCourse = new Course(dataReaderTemp["ID"].ToString(),
-                                (int)dataReaderTemp["YR"],
-                                (int)dataReaderTemp["SEM"],
-                                dataReaderTemp["NAME"].ToString(),
-                                dataReaderTemp["DESC"].ToString(),
-                                (int)dataReaderTemp["POINTS"],
-                                dataReaderTemp["ACADEMICORG"].ToString(),
-                                dataReaderTemp["ACADEMICGROUP"].ToString(),
-                                dataReaderTemp["COURSECOMP"].ToString(),
-                                dataReaderTemp["GRADINGBASIS"].ToString(),
-                                dataReaderTemp["TYPOFFERED"].ToString(),
-                                dataReaderTemp["REMARKS"].ToString(),
-                                dataReaderTemp["CAREERID"].ToString(),
-                                (int)dataReaderTemp["COMPULSORY"]);
+                        finalCourse = createCourse(dataReaderTemp);
                     }
                     if (finalCourse != null)
                     {
@@ -289,20 +279,7 @@ namespace WebApplicationForms.Controller
                         SQLiteDataReader dataReaderCourse = sqlCommandCourse.ExecuteReader();
                         while (dataReaderCourse.Read())
                         {
-                            Course cseCourse = new Course(dataReaderCourse["ID"].ToString(),
-                                    (int)dataReaderCourse["YR"],
-                                    (int)dataReaderCourse["SEM"],
-                                    dataReaderCourse["NAME"].ToString(),
-                                    dataReaderCourse["DESC"].ToString(),
-                                    (int)dataReaderCourse["POINTS"],
-                                    dataReaderCourse["ACADEMICORG"].ToString(),
-                                    dataReaderCourse["ACADEMICGROUP"].ToString(),
-                                    dataReaderCourse["COURSECOMP"].ToString(),
-                                    dataReaderCourse["GRADINGBASIS"].ToString(),
-                                    dataReaderCourse["TYPOFFERED"].ToString(),
-                                    dataReaderCourse["REMARKS"].ToString(),
-                                    dataReaderCourse["CAREERID"].ToString(),
-                                    (int)dataReaderCourse["COMPULSORY"]);
+                            Course cseCourse = createCourse(dataReaderCourse);
 
                             courses.Add(cseCourse);
                         }
@@ -380,20 +357,7 @@ namespace WebApplicationForms.Controller
 
                 while (dataReader.Read())
                 {
-                    Course course = new Course(dataReader["ID"].ToString(),
-                        (int)dataReader["YR"],
-                        (int)dataReader["SEM"],
-                        dataReader["NAME"].ToString(),
-                        dataReader["DESC"].ToString(),
-                        (int)dataReader["POINTS"],
-                        dataReader["ACADEMICORG"].ToString(),
-                        dataReader["ACADEMICGROUP"].ToString(),
-                        dataReader["COURSECOMP"].ToString(),
-                        dataReader["GRADINGBASIS"].ToString(),
-                        dataReader["TYPOFFERED"].ToString(),
-                        dataReader["REMARKS"].ToString(),
-                        dataReader["CAREERID"].ToString(),
-                        (int)dataReader["COMPULSORY"]);
+                    Course course = createCourse(dataReader);
                     courses.Add(course);
                 }
                 closeDatabase();
@@ -417,20 +381,7 @@ namespace WebApplicationForms.Controller
 
                 while (dataReader.Read())
                 {
-                    course = new Course(dataReader["ID"].ToString(),
-                        (int)dataReader["YR"],
-                        (int)dataReader["SEM"],
-                        dataReader["NAME"].ToString(),
-                        dataReader["DESC"].ToString(),
-                        (int)dataReader["POINTS"],
-                        dataReader["ACADEMICORG"].ToString(),
-                        dataReader["ACADEMICGROUP"].ToString(),
-                        dataReader["COURSECOMP"].ToString(),
-                        dataReader["GRADINGBASIS"].ToString(),
-                        dataReader["TYPOFFERED"].ToString(),
-                        dataReader["REMARKS"].ToString(),
-                        dataReader["CAREERID"].ToString(),
-                        (int)dataReader["COMPULSORY"]);
+                    course = createCourse(dataReader);
 
                     // Retrieve all pre req courses
                     //
@@ -449,20 +400,7 @@ namespace WebApplicationForms.Controller
 
                             while (dataReaderTemp5.Read())
                             {
-                                Course preReq = new Course(dataReaderTemp5["ID"].ToString(),
-                                    (int)dataReaderTemp5["YR"],
-                                    (int)dataReaderTemp5["SEM"],
-                                    dataReaderTemp5["NAME"].ToString(),
-                                    dataReaderTemp5["DESC"].ToString(),
-                                    (int)dataReaderTemp5["POINTS"],
-                                    dataReaderTemp5["ACADEMICORG"].ToString(),
-                                    dataReaderTemp5["ACADEMICGROUP"].ToString(),
-                                    dataReaderTemp5["COURSECOMP"].ToString(),
-                                    dataReaderTemp5["GRADINGBASIS"].ToString(),
-                                    dataReaderTemp5["TYPOFFERED"].ToString(),
-                                    dataReaderTemp5["REMARKS"].ToString(),
-                                    dataReaderTemp5["CAREERID"].ToString(),
-                                    (int)dataReaderTemp5["COMPULSORY"]);
+                                Course preReq = createCourse(dataReaderTemp5);
 
                                 course.preReqCourses.Add(preReq);
                             }
@@ -509,20 +447,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
                     Course preReq = null;
                     while (dataReaderTemp.Read())
                     {
-                        preReq = new Course(dataReaderTemp["ID"].ToString(),
-                                (int)dataReaderTemp["YR"],
-                                (int)dataReaderTemp["SEM"],
-                                dataReaderTemp["NAME"].ToString(),
-                                dataReaderTemp["DESC"].ToString(),
-                                (int)dataReaderTemp["POINTS"],
-                                dataReaderTemp["ACADEMICORG"].ToString(),
-                                dataReaderTemp["ACADEMICGROUP"].ToString(),
-                                dataReaderTemp["COURSECOMP"].ToString(),
-                                dataReaderTemp["GRADINGBASIS"].ToString(),
-                                dataReaderTemp["TYPOFFERED"].ToString(),
-                                dataReaderTemp["REMARKS"].ToString(),
-                                dataReaderTemp["CAREERID"].ToString(),
-                                (int)dataReaderTemp["COMPULSORY"]);
+                        preReq = createCourse(dataReaderTemp);
 
                         // Retrieve all pre req courses
                         //
@@ -541,20 +466,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                                 while (dataReaderTemp2.Read())
                                 {
-                                    Course preReqTemp = new Course(dataReaderTemp2["ID"].ToString(),
-                                        (int)dataReaderTemp2["YR"],
-                                        (int)dataReaderTemp2["SEM"],
-                                        dataReaderTemp2["NAME"].ToString(),
-                                        dataReaderTemp2["DESC"].ToString(),
-                                        (int)dataReaderTemp2["POINTS"],
-                                        dataReaderTemp2["ACADEMICORG"].ToString(),
-                                        dataReaderTemp2["ACADEMICGROUP"].ToString(),
-                                        dataReaderTemp2["COURSECOMP"].ToString(),
-                                        dataReaderTemp2["GRADINGBASIS"].ToString(),
-                                        dataReaderTemp2["TYPOFFERED"].ToString(),
-                                        dataReaderTemp2["REMARKS"].ToString(),
-                                        dataReaderTemp2["CAREERID"].ToString(),
-                                        (int)dataReaderTemp2["COMPULSORY"]);
+                                    Course preReqTemp = createCourse(dataReaderTemp2);
 
                                     preReq.preReqCourses.Add(preReqTemp);
                                 }
@@ -592,20 +504,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                 while (dataReader.Read())
                 {
-                    targetCourse = new Course(dataReader["ID"].ToString(),
-                        (int)dataReader["YR"],
-                        (int)dataReader["SEM"],
-                        dataReader["NAME"].ToString(),
-                        dataReader["DESC"].ToString(),
-                        (int)dataReader["POINTS"],
-                        dataReader["ACADEMICORG"].ToString(),
-                        dataReader["ACADEMICGROUP"].ToString(),
-                        dataReader["COURSECOMP"].ToString(),
-                        dataReader["GRADINGBASIS"].ToString(),
-                        dataReader["TYPOFFERED"].ToString(),
-                        dataReader["REMARKS"].ToString(),
-                        dataReader["CAREERID"].ToString(),
-                        (int)dataReader["COMPULSORY"]);
+                    targetCourse = createCourse(dataReader);
                 }
 
                 if (targetCourse != null)
@@ -625,20 +524,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                         while (dataReaderTemp.Read())
                         {
-                            Course preReq = new Course(dataReaderTemp["ID"].ToString(),
-                                (int)dataReaderTemp["YR"],
-                                (int)dataReaderTemp["SEM"],
-                                dataReaderTemp["NAME"].ToString(),
-                                dataReaderTemp["DESC"].ToString(),
-                                (int)dataReaderTemp["POINTS"],
-                                dataReaderTemp["ACADEMICORG"].ToString(),
-                                dataReaderTemp["ACADEMICGROUP"].ToString(),
-                                dataReaderTemp["COURSECOMP"].ToString(),
-                                dataReaderTemp["GRADINGBASIS"].ToString(),
-                                dataReaderTemp["TYPOFFERED"].ToString(),
-                                dataReaderTemp["REMARKS"].ToString(),
-                                dataReaderTemp["CAREERID"].ToString(),
-                                (int)dataReaderTemp["COMPULSORY"]);
+                            Course preReq = createCourse(dataReaderTemp);
 
                             preRequisiteCourses.Add(preReq);
                         }
@@ -676,20 +562,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                     while (dataReaderTemp.Read())
                     {
-                        Course cseCourse = new Course(dataReaderTemp["ID"].ToString(),
-                                (int)dataReaderTemp["YR"],
-                                (int)dataReaderTemp["SEM"],
-                                dataReaderTemp["NAME"].ToString(),
-                                dataReaderTemp["DESC"].ToString(),
-                                (int)dataReaderTemp["POINTS"],
-                                dataReaderTemp["ACADEMICORG"].ToString(),
-                                dataReaderTemp["ACADEMICGROUP"].ToString(),
-                                dataReaderTemp["COURSECOMP"].ToString(),
-                                dataReaderTemp["GRADINGBASIS"].ToString(),
-                                dataReaderTemp["TYPOFFERED"].ToString(),
-                                dataReaderTemp["REMARKS"].ToString(),
-                                dataReaderTemp["CAREERID"].ToString(),
-                                (int)dataReaderTemp["COMPULSORY"]);
+                        Course cseCourse = createCourse(dataReaderTemp);
 
                         courses.Add(cseCourse);
                     }
@@ -725,20 +598,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                     while (dataReaderTemp.Read())
                     {
-                        Course cseCourse = new Course(dataReaderTemp["ID"].ToString(),
-                                (int)dataReaderTemp["YR"],
-                                (int)dataReaderTemp["SEM"],
-                                dataReaderTemp["NAME"].ToString(),
-                                dataReaderTemp["DESC"].ToString(),
-                                (int)dataReaderTemp["POINTS"],
-                                dataReaderTemp["ACADEMICORG"].ToString(),
-                                dataReaderTemp["ACADEMICGROUP"].ToString(),
-                                dataReaderTemp["COURSECOMP"].ToString(),
-                                dataReaderTemp["GRADINGBASIS"].ToString(),
-                                dataReaderTemp["TYPOFFERED"].ToString(),
-                                dataReaderTemp["REMARKS"].ToString(),
-                                dataReaderTemp["CAREERID"].ToString(),
-                                (int)dataReaderTemp["COMPULSORY"]);
+                        Course cseCourse = createCourse(dataReaderTemp);
 
                         // Retrieve all pre req courses
                         //
@@ -757,20 +617,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                                 while (dataReaderTemp5.Read())
                                 {
-                                    Course preReq = new Course(dataReaderTemp5["ID"].ToString(),
-                                        (int)dataReaderTemp5["YR"],
-                                        (int)dataReaderTemp5["SEM"],
-                                        dataReaderTemp5["NAME"].ToString(),
-                                        dataReaderTemp5["DESC"].ToString(),
-                                        (int)dataReaderTemp5["POINTS"],
-                                        dataReaderTemp5["ACADEMICORG"].ToString(),
-                                        dataReaderTemp5["ACADEMICGROUP"].ToString(),
-                                        dataReaderTemp5["COURSECOMP"].ToString(),
-                                        dataReaderTemp5["GRADINGBASIS"].ToString(),
-                                        dataReaderTemp5["TYPOFFERED"].ToString(),
-                                        dataReaderTemp5["REMARKS"].ToString(),
-                                        dataReaderTemp5["CAREERID"].ToString(),
-                                        (int)dataReaderTemp5["COMPULSORY"]);
+                                    Course preReq = createCourse(dataReaderTemp5);
 
                                     cseCourse.preReqCourses.Add(preReq);
                                 }
@@ -862,20 +709,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                     while (dataReaderTemp.Read())
                     {
-                        Course restrCourse = new Course(dataReaderTemp["ID"].ToString(),
-                                (int)dataReaderTemp["YR"],
-                                (int)dataReaderTemp["SEM"],
-                                dataReaderTemp["NAME"].ToString(),
-                                dataReaderTemp["DESC"].ToString(),
-                                (int)dataReaderTemp["POINTS"],
-                                dataReaderTemp["ACADEMICORG"].ToString(),
-                                dataReaderTemp["ACADEMICGROUP"].ToString(),
-                                dataReaderTemp["COURSECOMP"].ToString(),
-                                dataReaderTemp["GRADINGBASIS"].ToString(),
-                                dataReaderTemp["TYPOFFERED"].ToString(),
-                                dataReaderTemp["REMARKS"].ToString(),
-                                dataReaderTemp["CAREERID"].ToString(),
-                                (int)dataReaderTemp["COMPULSORY"]);
+                        Course restrCourse = createCourse(dataReaderTemp);
 
                         restrictionList.Add(restrCourse);
                     }
