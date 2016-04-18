@@ -7,6 +7,15 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <asp:updatepanel runat="server">
         <ContentTemplate>
+            <!-- Course Information dialog; when clicking a course button -->
+            <div id="courseInfoModal" class="modal">
+                <div class="modal-content" style="width:550px; height:300px; overflow-y: scroll">
+                    <span class="close">×</span>
+                    <table id="legend" 
+                        class="legend-table">
+                    </table>
+                </div>
+            </div>
             <table style="width:100%">
                 <tr style="border: 1px solid black">
                     <td colspan="3" style="border: 1px solid black">
@@ -29,7 +38,7 @@
                 </tr>
                 <tr style="border: 1px solid black">
                     <td style="width:20%; vertical-align: top; border: 1px solid black">
-                        <div id="fieldlist" style="background-color:transparent; overflow-y: scroll; height: 700px">
+                        <div id="fieldlist" style="background-color:transparent; overflow-y: scroll; height: 1024px">
                             <asp:TreeView ID="treeViewCourses"
                                 RootNodeStyle-ImageUrl="~/Images/graduate_icon.png"
                                 ParentNodeStyle-ImageUrl="~/Images/part_icon.png"
@@ -44,12 +53,12 @@
                             </asp:TreeView>
                         </div>
                     </td>
-                    <td style="width:80%; height:100%; vertical-align: top; border: 1px solid black"; rowspan="2">
+                    <td style="width:80%; height:100%; vertical-align: top; border: 1px solid black">
                         <div id="coursepathpanel" style="height: 1024px">
                         </div>
                     </td>
                 </tr>
-                <tr style="border: 1px solid black">
+                <!-- <tr style="border: 1px solid black">
                     <td style="vertical-align: top">
                         <div style="width:400px; height:324px;overflow-y: scroll">
                             <table id="legend" 
@@ -57,7 +66,7 @@
                             </table>
                         </div>
                     </td>
-                </tr>
+                </tr> -->
             </table>
         </ContentTemplate>
     </asp:updatepanel>

@@ -7,16 +7,13 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <asp:updatepanel runat="server">
         <ContentTemplate>
+            <!-- Course Information dialog; when clicking a course button -->
             <div id="courseInfoModal" class="modal">
-                <!-- Modal content -->
                 <div class="modal-content" style="width:550px; height:300px; overflow-y: scroll">
                     <span class="close">×</span>
-                    <!-- <p>Some text in the Modal..</p> -->
-                    <!-- <div style="overflow-y: scroll"> -->
-                            <table id="legend" 
-                                class="legend-table">
-                            </table>
-                    <!-- </div> -->
+                    <table id="legend" 
+                        class="legend-table">
+                    </table>
                 </div>
             </div>
             <table style="width:100%">
@@ -40,7 +37,7 @@
                     </td>
                 </tr>
                 <tr style="border: 1px solid black">
-                    <td style="width:20%; height:100%; vertical-align: top; border: 1px solid black">
+                    <td style="width:20%; vertical-align: top; border: 1px solid black">
                         <div id="fieldlist" style="background-color:transparent; overflow-y: scroll; height: 1024px">
                             <asp:TreeView ID="treeViewCareers" 
                                 LeafNodeStyle-ImageUrl="~/Images/study_icon.png"
