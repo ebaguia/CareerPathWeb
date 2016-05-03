@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApplicationForms.Controller
 {
-    public class CommonInternals
+    public static class CommonInternals
     {
         public enum Departments
         {
@@ -71,7 +71,11 @@ namespace WebApplicationForms.Controller
 
         public const int TOTAL_YEARS = 4;
 
-        public const int TREE_COURSE_BUTTON_HEIGHT = 50;
-        public const int TREE_COURSE_BUTTON_WIDTH = 210;
+        // Starting Y of buttons per year (e.g. I, II, III, IV)
+        // 
+        public const int BUTTONSTART_Y = 90;
+        public const int BUTTONSTART_Y2 = BUTTONSTART_Y + 50;
+        public const int BUTTONSTART_Y3 = BUTTONSTART_Y + 100;
+        public const int BUTTONSTART_Y4 = BUTTONSTART_Y + 150;
     }
 }

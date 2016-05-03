@@ -7,6 +7,7 @@ var NUMBER_OF_YEARS = 4;
 var COLUMN_WIDTH;
 var BUTTON_STARTX1 = 20;
 var BUTTON_STARTX2 = 60;
+var ROW_TOTAL = 12;
 
 /**
  * Class the defines the Course object
@@ -172,23 +173,24 @@ function focusOnCourse(courseinfo) {
     //
     addCourseInfoHeader(legend);
 
-    // There are 11 rows to be made
+    // There are ROW_TOTAL rows to be made
     //
-    for (i = 1; i <= 11; i++) {
+    for (i = 1; i <= ROW_TOTAL; i++) {
         var row = legend.insertRow(i);
         rows.push(row);
     }
     
     addCourseInfoRow(rows[1], "ID", courseinfo.id);
     addCourseInfoRow(rows[2], "Name", courseinfo.name);
-    addCourseInfoRow(rows[3], "Type", courseinfo.compulsory == 0 ? "Compulsory" : "Elective");
+    addCourseInfoRow(rows[3], "Type", courseinfo.compulsory == 1 ? "Compulsory" : "Elective");
     addCourseInfoRow(rows[4], "Description", courseinfo.description);
     addCourseInfoRow(rows[5], "Academic Organization", courseinfo.academicOrg);
     addCourseInfoRow(rows[6], "Academic Group", courseinfo.academicGroup);
     addCourseInfoRow(rows[7], "Course Component", courseinfo.courseComp);
     addCourseInfoRow(rows[8], "Grading Basis", courseinfo.gradingBasis);
     addCourseInfoRow(rows[9], "Typically Offered", courseinfo.typeOffered);
-    //addCourseInfoRow(rows[10], "Restrictions(s)", courseinfo.restrString);
+    addCourseInfoRow(rows[10], "Prerequisite(s)", courseinfo.preReqString);
+    addCourseInfoRow(rows[11], "Restrictions(s)", courseinfo.restrString);
 
     var modal = document.getElementById('courseInfoModal');
     modal.style.display = "block";
@@ -210,6 +212,9 @@ function focusOnCourse(courseinfo) {
 
 }
 
+//
+// The first row of the course information table is the header
+//
 function addCourseInfoHeader(legend) {
     var header = legend.createTHead();
     var row = header.insertRow(0);
@@ -282,7 +287,7 @@ function createCourseButton(width, height, paper, courseinfo) {
     else if (courseinfo.year == 4) {
         bbox = paper.rect(years[3] + bboxstartx, courseinfo.ycoor, width, height);
     }
-    if(courseinfo.compulsory == 0) {
+    if(courseinfo.compulsory == 1) {
         bbox.attr({
             "fill": "orangered",
             "stroke": "orangered",
@@ -303,7 +308,7 @@ function createCourseButton(width, height, paper, courseinfo) {
         bbox.attrs.y + bbox.attrs.height / 2,
         courseinfo.id).attr({
             "font-family": "Arial",
-            "font-size": 10,
+            "font-size": 12,
             "cursor": "pointer"
         });
 

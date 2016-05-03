@@ -9,7 +9,7 @@
         <ContentTemplate>
             <!-- Course Information dialog; when clicking a course button -->
             <div id="courseInfoModal" class="modal">
-                <div class="modal-content" style="width:550px; height:300px; overflow-y: scroll">
+                <div class="modal-content" style="width:550px; height:400px; overflow-y: scroll">
                     <span class="close">×</span>
                     <table id="legend" 
                         class="legend-table">
@@ -27,12 +27,12 @@
                 <tr style="border: 1px solid black">
                     <td id="fieldlist-col-name" style="width:20%" class="col-name">
                         <div style="text-align: center">
-                            <h3>Fields</h3>
+                            <h3>Careers</h3>
                         </div>
                     </td>
                     <td id="pathcanvas-col-name" style="width:80%" class="col-name">
                         <div style="text-align: center">
-                            <h3>Path</h3>
+                            <h3>Career Path</h3>
                         </div>
                     </td>
                 </tr>
@@ -41,12 +41,12 @@
                         <div id="fieldlist" style="background-color:transparent; overflow-y: scroll; height: 1024px">
                             <asp:TreeView ID="treeViewCareers" 
                                 LeafNodeStyle-ImageUrl="~/Images/study_icon.png"
-                                ShowLines="false"
+                                ShowLines="true"
                                 ForeColor="Purple"
                                 OnSelectedNodeChanged="TreeViewCareers_SelectedNodeChanged"
                                 runat="server">
                                 <NodeStyle Font-Size="10pt" ForeColor="Purple"/>
-                                <RootNodeStyle Font-Bold="True" Font-Size="12pt"/>
+                                <RootNodeStyle Font-Bold="True" Font-Size="12pt" NodeSpacing="10"/>
                             </asp:TreeView>
                         </div>
                     </td>

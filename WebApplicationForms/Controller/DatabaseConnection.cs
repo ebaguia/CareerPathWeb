@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using WebApplicationForms.Helper;
 
 namespace WebApplicationForms.Controller
 {
@@ -31,10 +32,11 @@ namespace WebApplicationForms.Controller
                 //dbConnectioName = "Data Source=C:\\inetpub\\wwwroot\\CareerPathWebDBService" + "\\" + CommonInternals.DB_NAME +";Version=3;New=False;Compress=False;Read Only=True";
                 dbConnection = new SQLiteConnection(dbConnectioName);
                 dbConnection.Open();
+                CareerPathLogger.Info("DatabaseConnection::DatabaseConnection():dbConnectioName = " + dbConnectioName);
             }
             catch (Exception ex)
             {
-                throw ex;
+                CareerPathLogger.Error("DatabaseConnection::openDatabase() " + ex.Message);
             }
         }
 
@@ -46,7 +48,7 @@ namespace WebApplicationForms.Controller
             }
             catch (Exception ex)
             {
-                throw ex;
+                CareerPathLogger.Error("DatabaseConnection::closeDatabase() " + ex.Message);
             }
         }
 
@@ -73,7 +75,7 @@ namespace WebApplicationForms.Controller
             }
             catch (Exception ex)
             {
-                throw ex;
+                CareerPathLogger.Error("DatabaseConnection::createCourse() " + ex.Message);
             }
 
             return course;
@@ -91,7 +93,7 @@ namespace WebApplicationForms.Controller
             }
             catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::executeQuery() " + ex.Message);
             }
         }
 
@@ -177,11 +179,7 @@ namespace WebApplicationForms.Controller
             }
             catch (Exception ex)
             {
-                careers.Add(new Career("Exception",
-                    ex.Data.ToString(),
-                    ex.Data.ToString(),
-                    null,
-                    null));
+                CareerPathLogger.Error("DatabaseConnection::readCareers() " + ex.Message);
             }
 
             return careers;
@@ -205,9 +203,9 @@ namespace WebApplicationForms.Controller
                 }
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::readCareerJobs() " + ex.Message);
             }
 
             return jobs;
@@ -243,9 +241,9 @@ namespace WebApplicationForms.Controller
                 }
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::readCareerFinalCourses() " + ex.Message);
             }
 
             return courses;
@@ -293,9 +291,9 @@ namespace WebApplicationForms.Controller
                 }
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::readProgrammes() " + ex.Message);
             }
 
             return programmes;
@@ -314,9 +312,9 @@ namespace WebApplicationForms.Controller
                 progName = dataReader.Read() ? dataReader.GetString(0) : "";
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::readProgrammeName() " + ex.Message);
             }
 
             return progName;
@@ -335,9 +333,9 @@ namespace WebApplicationForms.Controller
                 progName = dataReader.Read() ? dataReader.GetString(0) : "";
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::readProgrammeDescription() " + ex.Message);
             }
 
             return progName;
@@ -362,9 +360,9 @@ namespace WebApplicationForms.Controller
                 }
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::readCourses() " + ex.Message);
             }
         }
 
@@ -410,9 +408,9 @@ namespace WebApplicationForms.Controller
 
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::getCourse() " + ex.Message);
             }
 
             return course;
@@ -480,9 +478,9 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
                 }
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::generateAllRelatedPreRequisites() " + ex.Message);
             }
 
             preRequisiteCourses.Add(course);
@@ -534,7 +532,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             }
             catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::getPrerequisiteCourses() " + ex.Message);
             }
 
             preRequisiteCourses.Sort((x, y) => y.year.CompareTo(x.year));
@@ -569,9 +567,9 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
                 }
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::readCoursesFromProgramme() " + ex.Message);
             }
 
             return courses;
@@ -580,7 +578,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
         public List<Course> readCoursesUsingProgrammePart(string programmeId, string part)
         {
             List<Course> courses = new List<Course>();
-            String readCoursesStatement = "SELECT COURSEID FROM CourseProgrammePart WHERE PROGRAMMEID = '" + programmeId + "' AND PART = '" + part + "'";
+            String readCoursesStatement = "SELECT COURSEID FROM CourseProgrammePart WHERE PROGRAMMEPARTID = '" + programmeId + "' AND PART = '" + part + "'";
 
             try
             {
@@ -629,9 +627,9 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
                 }
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::readCoursesUsingProgrammePart() " + ex.Message);
             }
 
             return courses;
@@ -655,9 +653,9 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
                 }
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::readCourseProgrammePart() " + ex.Message);
             }
 
             return courseProgrammePartList;
@@ -680,9 +678,9 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
                 }
                 closeDatabase();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::readProgrammeParts() " + ex.Message);
             }
 
             return programmeParts;
@@ -718,7 +716,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             }
             catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::getRestrictionCourses() " + ex.Message);
             }
 
             return restrictionList;
@@ -740,7 +738,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             }
             catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::isCourseCompulsory() " + ex.Message);
             }
 
             return isCompulsory;
@@ -762,7 +760,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             }
             catch (Exception ex)
             {
-                // TODO: Logger
+                CareerPathLogger.Error("DatabaseConnection::isCourseElective() " + ex.Message);
             }
 
             return isElective;

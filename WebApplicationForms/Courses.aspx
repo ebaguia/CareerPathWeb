@@ -9,7 +9,7 @@
         <ContentTemplate>
             <!-- Course Information dialog; when clicking a course button -->
             <div id="courseInfoModal" class="modal">
-                <div class="modal-content" style="width:550px; height:300px; overflow-y: scroll">
+                <div class="modal-content" style="width:550px; height:400px; overflow-y: scroll">
                     <span class="close">×</span>
                     <table id="legend" 
                         class="legend-table">
@@ -43,13 +43,13 @@
                                 RootNodeStyle-ImageUrl="~/Images/graduate_icon.png"
                                 ParentNodeStyle-ImageUrl="~/Images/part_icon.png"
                                 LeafNodeStyle-ImageUrl="~/Images/study_icon.png"
-                                ShowLines="false"
+                                ShowLines="true"
                                 ForeColor="Purple"
                                 OnSelectedNodeChanged="TreeViewCourses_SelectedNodeChanged"
                                 runat="server">
                                 <NodeStyle Font-Size="10pt" ForeColor="Purple"/>
                                 <ParentNodeStyle Font-Bold="True" Font-Size="12pt"/>
-                                <RootNodeStyle Font-Bold="True" Font-Size="12pt"/>
+                                <RootNodeStyle Font-Bold="True" Font-Size="12pt" NodeSpacing="10"/>
                             </asp:TreeView>
                         </div>
                     </td>
