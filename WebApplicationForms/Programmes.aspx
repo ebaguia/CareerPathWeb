@@ -8,12 +8,23 @@
     <asp:updatepanel runat="server">
         <ContentTemplate>
             <!-- Course Information dialog; when clicking a course button -->
-            <div id="courseInfoModal" class="modal">
-                <div class="modal-content" style="width:550px; height:400px; overflow-y: scroll">
-                    <span class="close">×</span>
-                    <table id="legend" 
-                        class="legend-table">
-                    </table>
+            <div id="courseInfoModal" class="modal" onmousedown="drag(this.parentNode, event);">
+                <div class="modal-dialog" onmousedown="drag(this.parentNode, event);">
+                    <div class="modal-content" onmousedown="drag(this.parentNode, event);">
+                        <div class="modal-header" onmousedown="drag(this.parentNode, event);">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h3 class="modal-title"><b>Course Information</b></h3>
+                        </div>
+                        <div class="modal-body" onmousedown="drag(this.parentNode, event);">
+                            <table id="legend" 
+                                class="legend-table">
+                            </table>
+                        </div>
+                        <div class="modal-footer" onmousedown="drag(this.parentNode, event);">
+                            <p style="float: left">&copy; <%: DateTime.Now.Year %> - University of Auckland</p>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="float: right">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <table style="width:100%">

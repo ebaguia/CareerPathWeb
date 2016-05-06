@@ -232,6 +232,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\coursepath.js" />
+    <Content Include="Scripts\Drag.js" />
     <Content Include="Scripts\g.bar-min.js" />
     <Content Include="Scripts\g.bar.js" />
     <Content Include="Scripts\g.dot-min.js" />

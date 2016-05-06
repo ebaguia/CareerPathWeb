@@ -169,64 +169,75 @@ function focusOnCourse(courseinfo) {
     //
     legend.innerHTML = "";
 
-    // Define the column headers
-    //
-    addCourseInfoHeader(legend);
-
     // There are ROW_TOTAL rows to be made
     //
-    for (i = 1; i <= ROW_TOTAL; i++) {
+    for (i = 0; i < ROW_TOTAL; i++) {
         var row = legend.insertRow(i);
         rows.push(row);
     }
     
-    addCourseInfoRow(rows[1], "ID", courseinfo.id);
-    addCourseInfoRow(rows[2], "Name", courseinfo.name);
-    addCourseInfoRow(rows[3], "Type", courseinfo.compulsory == 1 ? "Compulsory" : "Elective");
-    addCourseInfoRow(rows[4], "Description", courseinfo.description);
-    addCourseInfoRow(rows[5], "Academic Organization", courseinfo.academicOrg);
-    addCourseInfoRow(rows[6], "Academic Group", courseinfo.academicGroup);
-    addCourseInfoRow(rows[7], "Course Component", courseinfo.courseComp);
-    addCourseInfoRow(rows[8], "Grading Basis", courseinfo.gradingBasis);
-    addCourseInfoRow(rows[9], "Typically Offered", courseinfo.typeOffered);
-    addCourseInfoRow(rows[10], "Prerequisite(s)", courseinfo.preReqString);
-    addCourseInfoRow(rows[11], "Restrictions(s)", courseinfo.restrString);
+    addCourseInfoRow(rows[0], "ID", courseinfo.id);
+    addCourseInfoRow(rows[1], "Name", courseinfo.name);
+    addCourseInfoRow(rows[2], "Type", courseinfo.compulsory == 1 ? "Compulsory" : "Elective");
+    addCourseInfoRow(rows[3], "Description", courseinfo.description);
+    addCourseInfoRow(rows[4], "Academic Organization", courseinfo.academicOrg);
+    addCourseInfoRow(rows[5], "Academic Group", courseinfo.academicGroup);
+    addCourseInfoRow(rows[6], "Course Component", courseinfo.courseComp);
+    addCourseInfoRow(rows[7], "Grading Basis", courseinfo.gradingBasis);
+    addCourseInfoRow(rows[8], "Typically Offered", courseinfo.typeOffered);
+    addCourseInfoRow(rows[9], "Prerequisite(s)", courseinfo.preReqString);
+    addCourseInfoRow(rows[10], "Restrictions(s)", courseinfo.restrString);
 
-    var modal = document.getElementById('courseInfoModal');
-    modal.style.display = "block";
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
+    $('#courseInfoModal').modal('show');
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+        if (event.target == $('#courseInfoModal')) {
+            $('#courseInfoModal').modal('toggle');
         }
     }
-
 }
 
-//
-// The first row of the course information table is the header
-//
-function addCourseInfoHeader(legend) {
-    var header = legend.createTHead();
-    var row = header.insertRow(0);
-    var cell1 = row.insertCell(0);
-    cell1.innerHTML = "<h4>COURSE</h4>";
-    cell1.style.backgroundColor = "#f1f1f1";
-    $(cell1).css("text-align", "center");
-
-    var cell2 = row.insertCell(1);
-    cell2.innerHTML = "<h4>INFORMATION</h4>";
-    cell2.style.backgroundColor = "#f1f1f1";
-    $(cell2).css("text-align", "center");
+var dragObject = null;
+var mouseOffset = null;
+function getMouseOffset(target, ev) {
+    ev = ev || window.event;
+    var docPos = getPosition(target);
+    var mousePos = mouseCoords(ev);
+    return { x: mousePos.x - docPos.x, y: mousePos.y - docPos.y };
+}
+function getPosition(e) {
+    var left = 0;
+    var top = 0;
+    while (e.offsetParent) {
+        left += e.offsetLeft;
+        top += e.offsetTop;
+        e = e.offsetParent;
+    }
+    left += e.offsetLeft;
+    top += e.offsetTop;
+    return { x: left, y: top };
+}
+function mouseMove(ev) {
+    ev = ev || window.event;
+    var mousePos = mouseCoords(ev);
+    if (dragObject) {
+        dragObject.style.position = 'absolute';
+        dragObject.style.top = mousePos.y - mouseOffset.y;
+        dragObject.style.left = mousePos.x - mouseOffset.x;
+        return false;
+    }
+}
+function mouseUp() {
+    dragObject = null;
+}
+function makeDraggable(item) {
+    if (!item) return;
+    item.onmousedown = function (ev) {
+        dragObject = this;
+        mouseOffset = getMouseOffset(this, ev);
+        return false;
+    }
 }
 
 function addCourseInfoRow(table_row, item, desc) {
