@@ -34,3 +34,22 @@
     border: 1px solid black;
     text-align: justify;
 }
+
+body {
+  margin: 30px;
+}
+
+.navbar {
+  min-height: 50px;
+}
+
+.navbar-nav {
+  padding-top: 10px;
+  font-family: Tahoma;
+  font-size: 20px;
+}
+
+.navbar-inverse {
+    background-color: #03447E;
+    border-color: #080808;
+}
