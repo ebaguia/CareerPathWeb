@@ -58,7 +58,7 @@ html {
 }
 
 body {
-  margin: 30px;
+  margin: 0;
 }
 
 a:focus {
@@ -915,7 +915,7 @@ pre code {
 .col-xs-10 {
   width: 83.33333333333334%;
 }
-+
+
 .col-xs-11 {
   width: 91.66666666666666%;
 }
@@ -4026,7 +4026,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   position: relative;
   z-index: 1000;
   min-height: 50px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   border: 1px solid transparent;
 }
 
@@ -4240,9 +4240,6 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-nav {
   margin: 7.5px -15px;
-  padding-top: 10px;
-  font-family: Tahoma;
-  font-size: 20px;
 }
 
 .navbar-nav > li > a {
@@ -4504,8 +4501,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse {
-    background-color: #03447E;
-    border-color: #080808;
+  background-color: #222222;
+  border-color: #080808;
 }
 
 .navbar-inverse .navbar-brand {
