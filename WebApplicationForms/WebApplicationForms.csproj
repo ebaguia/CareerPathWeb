@@ -221,6 +221,7 @@
     <Content Include="Images\part_icon.png" />
     <Content Include="Images\study_icon.png" />
     <Content Include="Images\UOA_SSS_LOGO_1007.jpg" />
+    <Content Include="Images\UOA_SSS_LOGO_1008.jpg" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

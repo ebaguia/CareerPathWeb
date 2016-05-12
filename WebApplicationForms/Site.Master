@@ -56,7 +56,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" runat="server" href="~/" data-toggle="tooltip" data-placement="bottom" title="Back to Homepage">
-                        <img src="Images/UOA_SSS_LOGO_1007.jpg"/>
+                        <img src="Images/UOA_SSS_LOGO_1008.jpg"/>
                     </a>
                 </div>
                 <div class="navbar-collapse collapse">
@@ -87,7 +87,7 @@
                 </div>
             </div>
         </div>
-        <div class="container body-content">
+        <div class="container body-content" style="width:2048px">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <hr />
