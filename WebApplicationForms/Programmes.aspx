@@ -43,7 +43,7 @@
                     </td>
                     <td id="pathcanvas-col-name" style="width:80%" class="col-name">
                         <div style="text-align: center">
-                            <h3>Path</h3>
+                            <h3>Career Path</h3>
                         </div>
                     </td>
                 </tr>

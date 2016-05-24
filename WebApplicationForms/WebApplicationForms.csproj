@@ -217,6 +217,7 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Courses.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Help.aspx" />
     <Content Include="Images\graduate_icon.png" />
     <Content Include="Images\part_icon.png" />
     <Content Include="Images\study_icon.png" />
@@ -451,6 +452,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Help.aspx.cs">
+      <DependentUpon>Help.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Help.aspx.designer.cs">
+      <DependentUpon>Help.aspx</DependentUpon>
     </Compile>
     <Compile Include="Helper\CareerPathLogger.cs" />
     <Compile Include="Models\IdentityModels.cs" />

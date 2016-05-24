@@ -53,3 +53,9 @@ body {
     background-color: #03447E;
     border-color: #080808;
 }
+
+ul li {
+    display:inline-block;
+    text-align:justify;
+    word-wrap: break-word;
+}
