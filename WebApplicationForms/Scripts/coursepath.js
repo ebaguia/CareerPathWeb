@@ -300,8 +300,8 @@ function createCourseButton(width, height, paper, courseinfo) {
     }
     if(courseinfo.compulsory == 1) {
         bbox.attr({
-            "fill": "orangered",
-            "stroke": "orangered",
+            "fill": "#FF5500",
+            "stroke": "#FF5500",
             "cursor": "pointer"
         });
     }
@@ -317,9 +317,10 @@ function createCourseButton(width, height, paper, courseinfo) {
     //
     var buttontext = paper.text(bbox.attrs.x + bbox.attrs.width / 2,
         bbox.attrs.y + bbox.attrs.height / 2,
-        courseinfo.id + "\nSemester " + courseinfo.sem).attr({
+        courseinfo.id + "\nS" + courseinfo.sem).attr({
             "font-family": "Arial",
-            "font-size": 12,
+            "font-size": 13,
+            "font-weight": "bold",
             "cursor": "pointer",
         });
 
