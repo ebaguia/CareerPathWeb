@@ -128,7 +128,7 @@ function drawSomething(arg) {
             if (!is_course_exist) {
                 courseButtons.push({
                     courseinfo: courseinfo,
-                    button: createCourseButton(COLUMN_WIDTH - 80, 50, PAPER, courseinfo),
+                    button: createCourseButton(COLUMN_WIDTH - 70, 60, PAPER, courseinfo),
                     tops: [courseinfo.top]
                 });
             }
@@ -287,16 +287,16 @@ function createCourseButton(width, height, paper, courseinfo) {
     }
 
     if (courseinfo.year == 1) {
-        bbox = paper.rect(years[0] + bboxstartx, courseinfo.ycoor, width, height);
+        bbox = paper.rect(years[0] + bboxstartx, courseinfo.ycoor, width, height, 5);
     }
     else if (courseinfo.year == 2) {
-        bbox = paper.rect(years[1] + bboxstartx, courseinfo.ycoor, width, height);
+        bbox = paper.rect(years[1] + bboxstartx, courseinfo.ycoor, width, height, 5);
     }
     else if (courseinfo.year == 3) {
-        bbox = paper.rect(years[2] + bboxstartx, courseinfo.ycoor, width, height);
+        bbox = paper.rect(years[2] + bboxstartx, courseinfo.ycoor, width, height, 5);
     }
     else if (courseinfo.year == 4) {
-        bbox = paper.rect(years[3] + bboxstartx, courseinfo.ycoor, width, height);
+        bbox = paper.rect(years[3] + bboxstartx, courseinfo.ycoor, width, height, 5);
     }
     if(courseinfo.compulsory == 1) {
         bbox.attr({
@@ -317,10 +317,10 @@ function createCourseButton(width, height, paper, courseinfo) {
     //
     var buttontext = paper.text(bbox.attrs.x + bbox.attrs.width / 2,
         bbox.attrs.y + bbox.attrs.height / 2,
-        courseinfo.id).attr({
+        courseinfo.id + "\nSemester " + courseinfo.sem).attr({
             "font-family": "Arial",
             "font-size": 12,
-            "cursor": "pointer"
+            "cursor": "pointer",
         });
 
     // Create mouse events

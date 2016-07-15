@@ -5,8 +5,8 @@
     <hr style="border-width: 5px" />
     <h3>Contact us</h3>
     <p>Staff and postgraduate students of the Department of Electrical and Computer Engineering can be found at both the City Campus and Newmarket Campus. Please check the University Directory for individual locations.</p>
-    <h3>Student enquiries</h3>
     <hr style="border-width: 5px" />
+    <h3>Student enquiries</h3>
     <table style="width:100%">
         <tr>
             <td>

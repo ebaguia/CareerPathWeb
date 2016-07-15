@@ -65,6 +65,7 @@
                         <li><a runat="server" href="~/Programmes">Programmes</a></li>
                         <li><a runat="server" href="~/Courses">Courses</a></li>
                         <li><a runat="server" href="~/Contact">Contact</a></li>
+                        <li><a runat="server" href="~/Feedback">Feedback</a></li>
                         <li><a runat="server" href="~/Help">Help</a></li>
                     </ul>
                     <!--
