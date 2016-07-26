@@ -194,7 +194,7 @@ function focusOnCourse(courseinfo) {
     addCourseInfoRow(rows[6], "Course Component", courseinfo.courseComp);
     addCourseInfoRow(rows[7], "Grading Basis", courseinfo.gradingBasis);
     addCourseInfoRow(rows[8], "Typically Offered", courseinfo.typeOffered);
-    addCourseInfoRow(rows[9], "Enrollment Requirements", courseinfo.remarks);
+    addCourseInfoRow(rows[9], "Enrolment Requirements", courseinfo.remarks);
     //addCourseInfoRow(rows[10], "Prerequisite(s)", courseinfo.preReqString);
     //addCourseInfoRow(rows[11], "Restrictions(s)", courseinfo.restrString);
 
