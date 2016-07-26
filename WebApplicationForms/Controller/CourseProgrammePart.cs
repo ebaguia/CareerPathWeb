@@ -24,7 +24,7 @@ namespace WebApplicationForms.Controller
         private void Initialise()
         {
             DatabaseConnection dbConnection = new DatabaseConnection();
-            courses = dbConnection.readCoursesUsingProgrammePart(programmeId, part);
+            courses = dbConnection.ReadCoursesUsingProgrammePart(programmeId, part);
         }
 
         public String courseId { get; set; }

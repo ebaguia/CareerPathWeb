@@ -1,16 +1,18 @@
-﻿// Copyright (c) 2016 University of Auckland. All rights reserved.
-//
-//
+﻿/**
+ * @project CareerPath
+ * @author Emmanuel Baguia <e.baguia@gmail.com>
+ * @copyright (c) 2016 University of Auckland. All rights reserved.
+ */
 
 var PAPER;
 var NUMBER_OF_YEARS = 4;
 var COLUMN_WIDTH;
 var BUTTON_STARTX1 = 20;
 var BUTTON_STARTX2 = 60;
-var ROW_TOTAL = 12;
+var ROW_TOTAL = 13;
 
 /**
- * Class the defines the Course object
+ * Class that defines the Course object
  **/
 var Course = function (year,
                         sem,
@@ -22,6 +24,7 @@ var Course = function (year,
                         courseComp,
                         gradingBasis,
                         typeOffered,
+                        remarks,
                         preReqString,
                         restrString,
                         points,
@@ -39,6 +42,7 @@ var Course = function (year,
     this.courseComp = courseComp;
     this.gradingBasis = gradingBasis;
     this.typeOffered = typeOffered;
+    this.remarks = remarks;
     this.preReqString = preReqString;
     this.restrString = restrString;
     this.points = points;
@@ -106,6 +110,7 @@ function drawSomething(arg) {
                 json_parsed.courseComp,
                 json_parsed.gradingBasis,
                 json_parsed.typeOffered,
+                json_parsed.remarks,
                 json_parsed.preReqString,
                 json_parsed.restrString,
                 json_parsed.points,
@@ -159,6 +164,10 @@ function drawSomething(arg) {
     }
 }
 
+/**
+ * When a course button is selected, a dialog containing the course information
+ * is shown.
+ **/
 function focusOnCourse(courseinfo) {
     var rows = [];
     var legend;
@@ -185,12 +194,14 @@ function focusOnCourse(courseinfo) {
     addCourseInfoRow(rows[6], "Course Component", courseinfo.courseComp);
     addCourseInfoRow(rows[7], "Grading Basis", courseinfo.gradingBasis);
     addCourseInfoRow(rows[8], "Typically Offered", courseinfo.typeOffered);
-    addCourseInfoRow(rows[9], "Prerequisite(s)", courseinfo.preReqString);
-    addCourseInfoRow(rows[10], "Restrictions(s)", courseinfo.restrString);
+    addCourseInfoRow(rows[9], "Enrollment Requirements", courseinfo.remarks);
+    //addCourseInfoRow(rows[10], "Prerequisite(s)", courseinfo.preReqString);
+    //addCourseInfoRow(rows[11], "Restrictions(s)", courseinfo.restrString);
 
     $('#courseInfoModal').modal('show');
 
     // When the user clicks anywhere outside of the modal, close it
+    //
     window.onclick = function (event) {
         if (event.target == $('#courseInfoModal')) {
             $('#courseInfoModal').modal('toggle');
@@ -198,6 +209,9 @@ function focusOnCourse(courseinfo) {
     }
 }
 
+/**
+ * Course Information dialog dragg functions --->
+ **/
 var dragObject = null;
 var mouseOffset = null;
 function getMouseOffset(target, ev) {
@@ -231,19 +245,21 @@ function mouseMove(ev) {
 function mouseUp() {
     dragObject = null;
 }
-function makeDraggable(item) {
-    if (!item) return;
-    item.onmousedown = function (ev) {
-        dragObject = this;
-        mouseOffset = getMouseOffset(this, ev);
-        return false;
-    }
-}
+/**
+ * <--- Course Information dialog dragg functions
+ **/
 
+/**
+ * Adds row to the table in the Course Information dialog.
+ **/
 function addCourseInfoRow(table_row, item, desc) {
+    // Item name
+    //
     var cell1 = table_row.insertCell(0);
     cell1.innerHTML = "<b>" + item + "</b>";
 
+    // Item description
+    //
     var cell2 = table_row.insertCell(1);
     cell2.innerHTML = desc;
 }
@@ -251,10 +267,16 @@ function addCourseInfoRow(table_row, item, desc) {
 //
 // Helper functions
 //
+/**
+ * Draws a line
+ */
 Raphael.fn.line = function(startX, startY, endX, endY){
     return this.path('M' + startX + ' ' + startY + ' L' + endX + ' ' + endY);
 };
 
+/**
+ * Call this to write a header like text settings
+ */
 function writeTableRow(x, y, width, height, paper, TDdata) {
     var TD = TDdata.split(",");
     for (j = 0; j < TD.length; j++) {
@@ -270,6 +292,9 @@ function writeTableRow(x, y, width, height, paper, TDdata) {
     }
 }
 
+/**
+ * Draws a course button 
+ */
 function createCourseButton(width, height, paper, courseinfo) {
     var years = [];
     var bbox;

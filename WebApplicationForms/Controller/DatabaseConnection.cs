@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+ *
+ * Version:
+ *     $Id$
+ *
+ * Revisions:
+ *     $Log$
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,28 +17,61 @@ using WebApplicationForms.Helper;
 
 namespace WebApplicationForms.Controller
 {
+    /// <summary>
+    /// Database API
+    /// 
+    /// <list type="bullet">
+    /// 
+    /// <item>
+    /// <term>Author</term>
+    /// <description>Emmanuel Baguia</description>
+    /// </item>
+    /// 
+    /// </list>
+    /// 
+    /// </summary>
     public class DatabaseConnection
     {
-        private String dbConnectioName = null;
-        private SQLiteConnection dbConnection = null;
-        private SQLiteCommand sqlCommand = null;
-        private SQLiteDataReader dataReader = null;
+        private String dbConnectioName = null;          // database name with path
+        private SQLiteConnection dbConnection = null;   // database connection object
+        private SQLiteCommand sqlCommand = null;        // SQL command object
+        private SQLiteDataReader dataReader = null;     // SQL Data Reader object
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="void"></param>
         public DatabaseConnection()
         {
         }
 
-        public DatabaseConnection(string _connectionString)
+        /// <summary>
+        /// Constructor which accepts a database name with path
+        /// </summary>
+        /// <param name="connectionString">The location of the database</param>
+        public DatabaseConnection(string connectionString)
         {
-            dbConnectioName = _connectionString;
+            dbConnectioName = connectionString;
         }
 
-        private void openDatabase(List<Career> careers = null)
+        /// <summary>
+        /// Creates a database connection
+        /// </summary>
+        /// <param name="void"></param>
+        private void OpenDatabase()
         {
             try
             {
                 dbConnectioName = "Data Source=" + System.Environment.CurrentDirectory + "\\" + CommonInternals.DB_NAME + ";Version=3;New=False;Compress=False;Read Only=True";
-                //dbConnectioName = "Data Source=C:\\inetpub\\wwwroot\\CareerPathWebDBService" + "\\" + CommonInternals.DB_NAME +";Version=3;New=False;Compress=False;Read Only=True";
+
+                // Deployment location: C:\windows\system32\inetsrv
+                // Development location: C:\Program Files (x86)\IIS Express
+                //
+                // Do we need to move it to a common place??? If yes, below is the suggested location.
+                //
+                // dbConnectioName = "Data Source=C:\\inetpub\\wwwroot\\CareerPath\\DB" + "\\" + CommonInternals.DB_NAME +";Version=3;New=False;Compress=False;Read Only=True";
+                //
+
                 dbConnection = new SQLiteConnection(dbConnectioName);
                 dbConnection.Open();
                 CareerPathLogger.Info("DatabaseConnection::DatabaseConnection():dbConnectioName = " + dbConnectioName);
@@ -40,7 +82,11 @@ namespace WebApplicationForms.Controller
             }
         }
 
-        private void closeDatabase()
+        /// <summary>
+        /// Closes a database connection
+        /// </summary>
+        /// <param name="void"></param>
+        private void CloseDatabase()
         {
             try
             {
@@ -52,7 +98,11 @@ namespace WebApplicationForms.Controller
             }
         }
 
-        private Course createCourse(SQLiteDataReader dataReader)
+        /// <summary>
+        /// A helper function wich initializes a Course object
+        /// </summary>
+        /// <param name="dataReader">The resulting object which contains the course information from an SQL query</param>
+        private Course CreateCourse(SQLiteDataReader dataReader)
         {
             Course course = null;
 
@@ -81,30 +131,18 @@ namespace WebApplicationForms.Controller
             return course;
         }
 
-        public void executeQuery(string queryStatement)
-        {
-            try
-            {
-                openDatabase();
-                sqlCommand = dbConnection.CreateCommand();
-                sqlCommand.CommandText = queryStatement;
-                sqlCommand.ExecuteNonQuery();
-                closeDatabase();
-            }
-            catch (Exception ex)
-            {
-                CareerPathLogger.Error("DatabaseConnection::executeQuery() " + ex.Message);
-            }
-        }
-
-        public List<Career> readCareers()
+        /// <summary>
+        /// Retrieves all careers from the database
+        /// </summary>
+        /// <param name="void"></param>
+        public List<Career> ReadCareers()
         {
             string readCareerTable = "SELECT * FROM Career";
             List<Career> careers = new List<Career>();
 
             try
             {
-                openDatabase(careers);
+                OpenDatabase();
                 sqlCommand = new SQLiteCommand(readCareerTable, dbConnection);
                 dataReader = sqlCommand.ExecuteReader();
                 
@@ -136,7 +174,7 @@ namespace WebApplicationForms.Controller
                         Course finalCourse = null;
                         while (dataReaderTemp2.Read())
                         {
-                            finalCourse = createCourse(dataReaderTemp2);
+                            finalCourse = CreateCourse(dataReaderTemp2);
 
                             // Retrieve all pre req courses
                             //
@@ -155,7 +193,7 @@ namespace WebApplicationForms.Controller
 
                                     while (dataReaderTemp5.Read())
                                     {
-                                        Course preReq = createCourse(dataReaderTemp5);
+                                        Course preReq = CreateCourse(dataReaderTemp5);
 
                                         finalCourse.preReqCourses.Add(preReq);
                                     }
@@ -175,7 +213,7 @@ namespace WebApplicationForms.Controller
                                                finalCourses);
                     careers.Add(career);
                 }
-                closeDatabase();
+                CloseDatabase();
             }
             catch (Exception ex)
             {
@@ -185,40 +223,14 @@ namespace WebApplicationForms.Controller
             return careers;
         }
 
-        public List<String> readCareerJobs(Career career)
-        {
-            List<String> jobs = new List<string>();
-            String readJobsTable = "SELECT NAME FROM Job WHERE CAREERID ='" + career.id + "'";
-
-            try
-            {
-                openDatabase();
-                sqlCommand = new SQLiteCommand(readJobsTable, dbConnection);
-                dataReader = sqlCommand.ExecuteReader();
-
-                while (dataReader.Read())
-                {
-                    String job = dataReader["NAME"].ToString();
-                    jobs.Add(job);
-                }
-                closeDatabase();
-            }
-            catch (Exception ex)
-            {
-                CareerPathLogger.Error("DatabaseConnection::readCareerJobs() " + ex.Message);
-            }
-
-            return jobs;
-        }
-
-        public List<Course> readCareerFinalCourses(Career career)
+        public List<Course> ReadCareerFinalCourses(Career career)
         {
             List<Course> courses = new List<Course>();
             String readJobsTable = "SELECT COURSEID FROM FinalCourse WHERE CAREERID ='" + career.id + "'";
 
             try
             {
-                openDatabase();
+                OpenDatabase();
                 sqlCommand = new SQLiteCommand(readJobsTable, dbConnection);
                 dataReader = sqlCommand.ExecuteReader();
 
@@ -232,14 +244,14 @@ namespace WebApplicationForms.Controller
                     Course finalCourse = null;
                     while (dataReaderTemp.Read())
                     {
-                        finalCourse = createCourse(dataReaderTemp);
+                        finalCourse = CreateCourse(dataReaderTemp);
                     }
                     if (finalCourse != null)
                     {
                         courses.Add(finalCourse);
                     }
                 }
-                closeDatabase();
+                CloseDatabase();
             }
             catch (Exception ex)
             {
@@ -249,14 +261,14 @@ namespace WebApplicationForms.Controller
             return courses;
         }
 
-        public List<Programme> readProgrammes()
+        public List<Programme> ReadProgrammes()
         {
             List<Programme> programmes = new List<Programme>();
             string readProgrammeStatement = "SELECT * FROM Programme";
 
             try
             {
-                openDatabase();
+                OpenDatabase();
                 sqlCommand = new SQLiteCommand(readProgrammeStatement, dbConnection);
                 dataReader = sqlCommand.ExecuteReader();
 
@@ -277,7 +289,7 @@ namespace WebApplicationForms.Controller
                         SQLiteDataReader dataReaderCourse = sqlCommandCourse.ExecuteReader();
                         while (dataReaderCourse.Read())
                         {
-                            Course cseCourse = createCourse(dataReaderCourse);
+                            Course cseCourse = CreateCourse(dataReaderCourse);
 
                             courses.Add(cseCourse);
                         }
@@ -289,7 +301,7 @@ namespace WebApplicationForms.Controller
                                                         courses);
                     programmes.Add(programme);
                 }
-                closeDatabase();
+                CloseDatabase();
             }
             catch (Exception ex)
             {
@@ -299,87 +311,20 @@ namespace WebApplicationForms.Controller
             return programmes;
         }
 
-        public String readProgrammeName(String programmeId)
-        {
-            String progName = null;
-            String readProgrammeStatement = "SELECT NAME FROM Programme WHERE ID = '" + programmeId + "'";
-
-            try
-            {
-                openDatabase();
-                sqlCommand = new SQLiteCommand(readProgrammeStatement, dbConnection);
-                dataReader = sqlCommand.ExecuteReader();
-                progName = dataReader.Read() ? dataReader.GetString(0) : "";
-                closeDatabase();
-            }
-            catch (Exception ex)
-            {
-                CareerPathLogger.Error("DatabaseConnection::readProgrammeName() " + ex.Message);
-            }
-
-            return progName;
-        }
-
-        public String readProgrammeDescription(String programmeId)
-        {
-            String progName = null;
-            String readProgrammeStatement = "SELECT DESC FROM Programme WHERE ID = '" + programmeId + "'";
-
-            try
-            {
-                openDatabase();
-                sqlCommand = new SQLiteCommand(readProgrammeStatement, dbConnection);
-                dataReader = sqlCommand.ExecuteReader();
-                progName = dataReader.Read() ? dataReader.GetString(0) : "";
-                closeDatabase();
-            }
-            catch (Exception ex)
-            {
-                CareerPathLogger.Error("DatabaseConnection::readProgrammeDescription() " + ex.Message);
-            }
-
-            return progName;
-        }
-
-        public void readCourses(List<Course> courses)
-        {
-            String readCourseTable = "SELECT * FROM Course";
-
-            courses.Clear();
-
-            try
-            {
-                openDatabase();
-                sqlCommand = new SQLiteCommand(readCourseTable, dbConnection);
-                dataReader = sqlCommand.ExecuteReader();
-
-                while (dataReader.Read())
-                {
-                    Course course = createCourse(dataReader);
-                    courses.Add(course);
-                }
-                closeDatabase();
-            }
-            catch (Exception ex)
-            {
-                CareerPathLogger.Error("DatabaseConnection::readCourses() " + ex.Message);
-            }
-        }
-
-        public Course getCourse(string courseId)
+        public Course GetCourse(string courseId)
         {
             Course course = null;
             String readCourseTable = "SELECT * FROM Course WHERE ID  = '" + courseId + "'";
 
             try
             {
-                openDatabase();
+                OpenDatabase();
                 sqlCommand = new SQLiteCommand(readCourseTable, dbConnection);
                 dataReader = sqlCommand.ExecuteReader();
 
                 while (dataReader.Read())
                 {
-                    course = createCourse(dataReader);
+                    course = CreateCourse(dataReader);
 
                     // Retrieve all pre req courses
                     //
@@ -398,7 +343,7 @@ namespace WebApplicationForms.Controller
 
                             while (dataReaderTemp5.Read())
                             {
-                                Course preReq = createCourse(dataReaderTemp5);
+                                Course preReq = CreateCourse(dataReaderTemp5);
 
                                 course.preReqCourses.Add(preReq);
                             }
@@ -406,7 +351,7 @@ namespace WebApplicationForms.Controller
                     }
                 }
 
-                closeDatabase();
+                CloseDatabase();
             }
             catch (Exception ex)
             {
@@ -416,7 +361,7 @@ namespace WebApplicationForms.Controller
             return course;
         }
 
-        public List<Course> generateAllRelatedPreRequisites(Course course)
+        public List<Course> GenerateAllRelatedPreRequisites(Course course)
         {
             List<Course> preRequisiteCourses = new List<Course>();
             String queryStatement = @"WITH RECURSIVE
@@ -431,7 +376,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
             try
             {
-                openDatabase();
+                OpenDatabase();
                 sqlCommand = new SQLiteCommand(queryStatement, dbConnection);
                 dataReader = sqlCommand.ExecuteReader();
 
@@ -445,7 +390,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
                     Course preReq = null;
                     while (dataReaderTemp.Read())
                     {
-                        preReq = createCourse(dataReaderTemp);
+                        preReq = CreateCourse(dataReaderTemp);
 
                         // Retrieve all pre req courses
                         //
@@ -464,7 +409,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                                 while (dataReaderTemp2.Read())
                                 {
-                                    Course preReqTemp = createCourse(dataReaderTemp2);
+                                    Course preReqTemp = CreateCourse(dataReaderTemp2);
 
                                     preReq.preReqCourses.Add(preReqTemp);
                                 }
@@ -476,7 +421,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
                         preRequisiteCourses.Add(preReq);
                     }
                 }
-                closeDatabase();
+                CloseDatabase();
             }
             catch (Exception ex)
             {
@@ -488,7 +433,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             return preRequisiteCourses;
         }
 
-        public List<Course> getPrerequisiteCourses(String courseId)
+        public List<Course> GetPrerequisiteCourses(String courseId)
         {
             List<Course> preRequisiteCourses = new List<Course>();
             String readPreReqs = "SELECT * FROM Course WHERE ID = '" + courseId + "'";
@@ -496,13 +441,13 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
             try
             {
-                openDatabase();
+                OpenDatabase();
                 sqlCommand = new SQLiteCommand(readPreReqs, dbConnection);
                 dataReader = sqlCommand.ExecuteReader();
 
                 while (dataReader.Read())
                 {
-                    targetCourse = createCourse(dataReader);
+                    targetCourse = CreateCourse(dataReader);
                 }
 
                 if (targetCourse != null)
@@ -522,13 +467,13 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                         while (dataReaderTemp.Read())
                         {
-                            Course preReq = createCourse(dataReaderTemp);
+                            Course preReq = CreateCourse(dataReaderTemp);
 
                             preRequisiteCourses.Add(preReq);
                         }
                     }
                 }
-                closeDatabase();
+                CloseDatabase();
             }
             catch (Exception ex)
             {
@@ -539,14 +484,14 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             return preRequisiteCourses;
         }
 
-        public List<Course> readCoursesFromProgramme(Programme programme)
+        public List<Course> ReadCoursesFromProgramme(Programme programme)
         {
             List<Course> courses = new List<Course>();
-            String readCSECoursesStatement = "SELECT COURSEID FROM CourseProgrammePart WHERE PROGRAMMEID = '" + programme.id + "'";
+            String readCSECoursesStatement = "SELECT DISTINCT COURSEID FROM CourseProgrammePart WHERE PROGRAMMEID = '" + programme.id + "' ORDER BY COURSEID";
 
             try
             {
-                openDatabase();
+                OpenDatabase();
                 sqlCommand = new SQLiteCommand(readCSECoursesStatement, dbConnection);
                 dataReader = sqlCommand.ExecuteReader();
 
@@ -560,12 +505,12 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                     while (dataReaderTemp.Read())
                     {
-                        Course cseCourse = createCourse(dataReaderTemp);
+                        Course cseCourse = CreateCourse(dataReaderTemp);
 
                         courses.Add(cseCourse);
                     }
                 }
-                closeDatabase();
+                CloseDatabase();
             }
             catch (Exception ex)
             {
@@ -575,14 +520,14 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             return courses;
         }
 
-        public List<Course> readCoursesUsingProgrammePart(string programmeId, string part)
+        public List<Course> ReadCoursesUsingProgrammePart(string programmeId, string part)
         {
             List<Course> courses = new List<Course>();
             String readCoursesStatement = "SELECT COURSEID FROM CourseProgrammePart WHERE PROGRAMMEPARTID = '" + programmeId + "' AND PART = '" + part + "'";
 
             try
             {
-                openDatabase();
+                OpenDatabase();
                 sqlCommand = new SQLiteCommand(readCoursesStatement, dbConnection);
                 dataReader = sqlCommand.ExecuteReader();
 
@@ -596,7 +541,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                     while (dataReaderTemp.Read())
                     {
-                        Course cseCourse = createCourse(dataReaderTemp);
+                        Course cseCourse = CreateCourse(dataReaderTemp);
 
                         // Retrieve all pre req courses
                         //
@@ -615,7 +560,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                                 while (dataReaderTemp5.Read())
                                 {
-                                    Course preReq = createCourse(dataReaderTemp5);
+                                    Course preReq = CreateCourse(dataReaderTemp5);
 
                                     cseCourse.preReqCourses.Add(preReq);
                                 }
@@ -625,7 +570,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
                         courses.Add(cseCourse);
                     }
                 }
-                closeDatabase();
+                CloseDatabase();
             }
             catch (Exception ex)
             {
@@ -635,40 +580,14 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             return courses;
         }
 
-        public List<CourseProgrammePart> readCourseProgrammePart(Programme programme, string part)
-        {
-            List<CourseProgrammePart> courseProgrammePartList = new List<CourseProgrammePart>();
-            String readCSECoursesStatement = "SELECT * FROM CourseProgrammePart WHERE PROGRAMMEID = '" + programme.id + "' WHERE part = '" +  part + "'";
-
-            try
-            {
-                openDatabase();
-                sqlCommand = new SQLiteCommand(readCSECoursesStatement, dbConnection);
-                dataReader = sqlCommand.ExecuteReader();
-
-                while (dataReader.Read())
-                {
-                    CourseProgrammePart courseProgrammePart = new CourseProgrammePart(dataReader["COURSEID"].ToString(), dataReader["PART"].ToString(), dataReader["PROGRAMMEID"].ToString());
-                    courseProgrammePartList.Add(courseProgrammePart);
-                }
-                closeDatabase();
-            }
-            catch (Exception ex)
-            {
-                CareerPathLogger.Error("DatabaseConnection::readCourseProgrammePart() " + ex.Message);
-            }
-
-            return courseProgrammePartList;
-        }
-
-        public List<string> readProgrammeParts(Programme programme)
+        public List<string> ReadProgrammeParts(Programme programme)
         {
             List<string> programmeParts = new List<string>();
             String readCSECoursesStatement = "SELECT part AS part FROM CourseProgrammePart GROUP BY part";
 
             try
             {
-                openDatabase();
+                OpenDatabase();
                 sqlCommand = new SQLiteCommand(readCSECoursesStatement, dbConnection);
                 dataReader = sqlCommand.ExecuteReader();
 
@@ -676,7 +595,7 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
                 {
                     programmeParts.Add(dataReader["PART"].ToString());
                 }
-                closeDatabase();
+                CloseDatabase();
             }
             catch (Exception ex)
             {
@@ -686,14 +605,14 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             return programmeParts;
         }
 
-        public List<Course> getRestrictionCourses(String courseId)
+        public List<Course> GetRestrictionCourses(String courseId)
         {
             List<Course> restrictionList = new List<Course>();
             String readPreReqs = "SELECT RESTRCOURSEID FROM Restrictions WHERE COURSEID = '" + courseId + "'";
 
             try
             {
-                openDatabase();
+                OpenDatabase();
                 sqlCommand = new SQLiteCommand(readPreReqs, dbConnection);
                 dataReader = sqlCommand.ExecuteReader();
 
@@ -707,12 +626,12 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
 
                     while (dataReaderTemp.Read())
                     {
-                        Course restrCourse = createCourse(dataReaderTemp);
+                        Course restrCourse = CreateCourse(dataReaderTemp);
 
                         restrictionList.Add(restrCourse);
                     }
                 }
-                closeDatabase();
+                CloseDatabase();
             }
             catch (Exception ex)
             {
@@ -720,50 +639,6 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             }
 
             return restrictionList;
-        }
-
-        public bool isCourseCompulsory(Course targetCourse)
-        {
-            bool isCompulsory = false;
-
-            String queryStatement = "SELECT * FROM CompulsoryCourse WHERE COURSEID = '" + targetCourse.id + "'";
-
-            try
-            {
-                openDatabase();
-                sqlCommand = new SQLiteCommand(queryStatement, dbConnection);
-                dataReader = sqlCommand.ExecuteReader();
-                isCompulsory = dataReader.Read() ? true : false;
-                closeDatabase();
-            }
-            catch (Exception ex)
-            {
-                CareerPathLogger.Error("DatabaseConnection::isCourseCompulsory() " + ex.Message);
-            }
-
-            return isCompulsory;
-        }
-
-        public bool isCourseElective(Course targetCourse)
-        {
-            bool isElective = false;
-
-            String queryStatement = "SELECT * FROM ElectiveCourse WHERE COURSEID = '" + targetCourse.id + "'";
-
-            try
-            {
-                openDatabase();
-                sqlCommand = new SQLiteCommand(queryStatement, dbConnection);
-                dataReader = sqlCommand.ExecuteReader();
-                isElective = dataReader.Read() ? true : false;
-                closeDatabase();
-            }
-            catch (Exception ex)
-            {
-                CareerPathLogger.Error("DatabaseConnection::isCourseElective() " + ex.Message);
-            }
-
-            return isElective;
         }
     }
 }

@@ -1,4 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿/*
+ *
+ * Version:
+ *     $Id$
+ *
+ * Revisions:
+ *     $Log$
+ */
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -14,10 +23,23 @@ using WebApplicationForms.Controller;
 
 namespace WebApplicationForms
 {
+    /// <summary>
+    /// Class representing the Programmes tab
+    /// 
+    /// <list type="bullet">
+    /// 
+    /// <item>
+    /// <term>Author</term>
+    /// <description>Emmanuel Baguia</description>
+    /// </item>
+    /// 
+    /// </list>
+    /// 
+    /// </summary>
     public partial class Programmes : System.Web.UI.Page
     {
-        private static DatabaseConnection mDBConnection = new DatabaseConnection();
-        private static List<Programme> mECEProgrammes = null;
+        private static DatabaseConnection mDBConnection = new DatabaseConnection();     // database connection object
+        private static List<Programme> mECEProgrammes = null;                           // list of programmes
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -33,28 +55,36 @@ namespace WebApplicationForms
             }
         }
 
+        /// <summary>
+        /// Called when the page is selected
+        /// </summary>
+        /// <param name="void"></param>
         private void BindData()
         {
             // Populating programme list
             //
-            mECEProgrammes = mDBConnection.readProgrammes();
-            PopulateTreeViewControl(mECEProgrammes);
+            mECEProgrammes = mDBConnection.ReadProgrammes();
+            PopulateTreeViewControl();
         }
 
-        private void PopulateTreeViewControl(List<Programme> programmeList)
+        /// <summary>
+        /// Populates the treeview
+        /// </summary>
+        /// <param name="void"></param>
+        private void PopulateTreeViewControl()
         {
             TreeNode programmeNode = null;
 
             // Populating career list
             //
-            foreach (Programme programme in programmeList)
+            foreach (Programme programme in mECEProgrammes)
             {
                 programmeNode = new TreeNode(programme.name);
                 programmeNode.ChildNodes.Clear();
 
                 // List all parts (e.g. I, II, III) under each programme
                 //
-                List<string> programmeParts = mDBConnection.readProgrammeParts(programme);
+                List<string> programmeParts = mDBConnection.ReadProgrammeParts(programme);
                 string lastItem = programmeParts[programmeParts.Count - 1];
                 foreach(string programmePart in programmeParts)
                 {
@@ -66,7 +96,7 @@ namespace WebApplicationForms
 
                         // List all courses under each part of the programme
                         //
-                        List<Course> programmeCourses = mDBConnection.readCoursesUsingProgrammePart(programme.id, programmePart);
+                        List<Course> programmeCourses = mDBConnection.ReadCoursesUsingProgrammePart(programme.id, programmePart);
                         foreach(Course course in programmeCourses)
                         {
                             // Format: "- <COURSE ID>"
@@ -85,6 +115,11 @@ namespace WebApplicationForms
             }
         }
 
+        /// <summary>
+        /// Handles the selection of an item in the treeview
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void TreeViewProgrammes_SelectedNodeChanged(object sender, EventArgs e)
         {
             TreeNode courseNode = treeViewProgrammes.SelectedNode;
@@ -92,7 +127,7 @@ namespace WebApplicationForms
             // Retrieving the path of the selected course
             //
             string courseId = courseNode.Text.Replace("-", string.Empty);
-            Course course = mDBConnection.getCourse(courseId.Trim());
+            Course course = mDBConnection.GetCourse(courseId.Trim());
             if (course != null)
             {
                 // Send all information to our javascript at once

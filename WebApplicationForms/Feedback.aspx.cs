@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*
+ *
+ * Version:
+ *     $Id$
+ *
+ * Revisions:
+ *     $Log$
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,6 +17,20 @@ using System.Web.UI.WebControls;
 
 namespace WebApplicationForms
 {
+
+    /// <summary>
+    /// Class representing the Feedback tab
+    /// 
+    /// <list type="bullet">
+    /// 
+    /// <item>
+    /// <term>Author</term>
+    /// <description>Emmanuel Baguia</description>
+    /// </item>
+    /// 
+    /// </list>
+    /// 
+    /// </summary>
     public partial class Feedback : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
@@ -16,6 +38,10 @@ namespace WebApplicationForms
 
         }
 
+        /// <summary>
+        /// Configures the mail to be delivered
+        /// </summary>
+        /// <param name="void"></param>
         private void EmailFeedback()
         {
             try
@@ -61,6 +87,10 @@ namespace WebApplicationForms
             }
         }
 
+        /// <summary>
+        /// Removes all texts
+        /// </summary>
+        /// <param name="void"></param>
         private void Clear()
         {
             txtName.Text = string.Empty;
@@ -68,6 +98,11 @@ namespace WebApplicationForms
             txtComments.Text = string.Empty;
         }
 
+        /// <summary>
+        /// Handles the "Send" button in the page
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void SubmitComments(object sender, EventArgs e)
         {
             try
@@ -75,7 +110,7 @@ namespace WebApplicationForms
                 EmailFeedback();
                 lblMsg.ForeColor = System.Drawing.Color.Green;
                 Clear();
-                lblMsg.Text = "You comments are greatly appreciated. Thank you.";
+                lblMsg.Text = "Your comments are greatly appreciated. Thank you.";
             }
             catch(Exception ex)
             {

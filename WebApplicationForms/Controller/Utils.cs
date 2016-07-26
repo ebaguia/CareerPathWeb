@@ -109,7 +109,7 @@ namespace WebApplicationForms.Controller
          */ 
         public static string GetRestrictionDisplayString(DatabaseConnection dbConnection, Course course)
         {
-            List<Course> restrList = dbConnection.getRestrictionCourses(course.id);
+            List<Course> restrList = dbConnection.GetRestrictionCourses(course.id);
             string restrString = "";
             foreach (Course restrCourse in restrList)
             {
@@ -166,6 +166,23 @@ namespace WebApplicationForms.Controller
             return ycoor;
         }
 
+        public static string ResolveCourseRemarksString(string remarks)
+        {
+            string remarksString = "";
+            List<string> result = remarks.Split(';').ToList();
+
+            if (result.Count != 0)
+            {
+                // Let us add the pre-req courses
+                //
+                foreach(string remark in result)
+                {
+                    remarksString += "* " + remark.Trim('"') + "<br/>";
+                }
+            }
+            return remarksString;
+        }
+
         /**
          * Handles the drawing of career path when a course is selected from the selection.
          * 
@@ -186,7 +203,7 @@ namespace WebApplicationForms.Controller
 
             if (topCourse != null)
             {
-                List<Course> relatedPreReq = dbConnection.generateAllRelatedPreRequisites(topCourse);
+                List<Course> relatedPreReq = dbConnection.GenerateAllRelatedPreRequisites(topCourse);
 
                 // Init --->
                 //
@@ -215,7 +232,7 @@ namespace WebApplicationForms.Controller
 
                     // Top course
                     //
-                    List<Course> courseReq = dbConnection.getPrerequisiteCourses(preReq.id);
+                    List<Course> courseReq = dbConnection.GetPrerequisiteCourses(preReq.id);
                     if (topCourse.id == preReq.id)
                     {
                         jw.WriteStartObject();
@@ -239,6 +256,8 @@ namespace WebApplicationForms.Controller
                         jw.WriteValue(preReq.gradingBasis);
                         jw.WritePropertyName("typeOffered");
                         jw.WriteValue(preReq.typeOffered);
+                        jw.WritePropertyName("remarks");
+                        jw.WriteValue(Utils.ResolveCourseRemarksString(preReq.remarks));
                         jw.WritePropertyName("preReqString");
                         jw.WriteValue(Utils.GetPreReqDisplayString(courseReq));
                         jw.WritePropertyName("restrString");
@@ -309,8 +328,10 @@ namespace WebApplicationForms.Controller
                         jw.WriteValue(eachCoureReq.gradingBasis);
                         jw.WritePropertyName("typeOffered");
                         jw.WriteValue(eachCoureReq.typeOffered);
+                        jw.WritePropertyName("remarks");
+                        jw.WriteValue(Utils.ResolveCourseRemarksString(eachCoureReq.remarks));
                         jw.WritePropertyName("preReqString");
-                        jw.WriteValue(Utils.GetPreReqDisplayString(dbConnection.getPrerequisiteCourses(eachCoureReq.id)));
+                        jw.WriteValue(Utils.GetPreReqDisplayString(dbConnection.GetPrerequisiteCourses(eachCoureReq.id)));
                         jw.WritePropertyName("restrString");
                         jw.WriteValue(Utils.GetRestrictionDisplayString(dbConnection, eachCoureReq));
                         jw.WritePropertyName("points");

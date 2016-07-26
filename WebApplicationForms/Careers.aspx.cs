@@ -1,4 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿/*
+ *
+ * Version:
+ *     $Id$
+ *
+ * Revisions:
+ *     $Log$
+ */
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -14,10 +23,23 @@ using WebApplicationForms.Controller;
 
 namespace WebApplicationForms
 {
+    /// <summary>
+    /// Class representing the Careers tab
+    /// 
+    /// <list type="bullet">
+    /// 
+    /// <item>
+    /// <term>Author</term>
+    /// <description>Emmanuel Baguia</description>
+    /// </item>
+    /// 
+    /// </list>
+    /// 
+    /// </summary>
     public partial class Careers : System.Web.UI.Page
     {
-        private static DatabaseConnection mDBConnection = new DatabaseConnection();
-        private static List<Career> mECECareers = null;
+        private static DatabaseConnection mDBConnection = new DatabaseConnection();     // database connection object
+        private static List<Career> mECECareers = null;                                 // list of careers
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -33,21 +55,29 @@ namespace WebApplicationForms
             }
         }
 
+        /// <summary>
+        /// Called when the page is selected
+        /// </summary>
+        /// <param name="void"></param>
         private void BindData()
         {
             // Populating career list
             //
-            mECECareers = mDBConnection.readCareers();
-            PopulateTreeViewControl(mECECareers);
+            mECECareers = mDBConnection.ReadCareers();
+            PopulateTreeViewControl();
         }
 
-        private void PopulateTreeViewControl(List<Career> careerList)
+        /// <summary>
+        /// Populates the treeview
+        /// </summary>
+        /// <param name="void"></param>
+        private void PopulateTreeViewControl()
         {
             TreeNode parentNode = null;
 
             // Populating career list
             //
-            foreach (Career career in careerList)
+            foreach (Career career in mECECareers)
             {
                 parentNode = new TreeNode(career.name);
 
@@ -62,7 +92,7 @@ namespace WebApplicationForms
                 //
                 parentNode.ToolTip = jobString.Remove(jobString.Length-2);
 
-                List<Course> finalCoursesToTake = mDBConnection.readCareerFinalCourses(career);
+                List<Course> finalCoursesToTake = mDBConnection.ReadCareerFinalCourses(career);
 
                 parentNode.ChildNodes.Clear();
                 foreach (Course course in finalCoursesToTake)
@@ -78,6 +108,11 @@ namespace WebApplicationForms
             }
         }
 
+        /// <summary>
+        /// Handles the selection of an item in the treeview
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void TreeViewCareers_SelectedNodeChanged(object sender, EventArgs e)
         {
             TreeNode courseNode = treeViewCareers.SelectedNode;
@@ -85,7 +120,7 @@ namespace WebApplicationForms
             // Retrieving the path of the selected course
             //
             string courseId = courseNode.Text.Replace("-", string.Empty);
-            Course course = mDBConnection.getCourse(courseId.Trim());
+            Course course = mDBConnection.GetCourse(courseId.Trim());
 
             if(course != null)
             {
