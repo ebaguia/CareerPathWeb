@@ -177,7 +177,7 @@ namespace WebApplicationForms.Controller
                 //
                 foreach(string remark in result)
                 {
-                    remarksString += "* " + remark.Trim('"') + "<br/>";
+                    remarksString += remark.Trim('"') + "<br/><br/>";
                 }
             }
             return remarksString;
