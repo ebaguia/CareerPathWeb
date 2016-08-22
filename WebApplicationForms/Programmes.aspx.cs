@@ -91,12 +91,12 @@ namespace WebApplicationForms
                     
                     //if (programmePart != lastItem)
                     //{
-                        TreeNode partNode = new TreeNode(programmePart, programmePart);
+                        TreeNode partNode = new TreeNode("Part " + programmePart, programmePart);
                         programmeNode.ChildNodes.Add(partNode);
 
                         // List all courses under each part of the programme
                         //
-                        List<Course> programmeCourses = mDBConnection.ReadCoursesUsingProgrammePart(programme.id, programmePart);
+                        List<Course> programmeCourses = mDBConnection.ReadCoursesUsingProgrammePart(programme, programmePart);
                         foreach(Course course in programmeCourses)
                         {
                             // Format: "- <COURSE ID>"

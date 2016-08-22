@@ -68,8 +68,14 @@ function initLayout() {
     // Creating column headers
     //
     for (var i = 0; i < NUMBER_OF_YEARS; i++) {
-        writeTableRow(x, y, COLUMN_WIDTH, height, PAPER, "YEAR " + (i + 1));
-        x += COLUMN_WIDTH;
+        if (i != 3) {
+            writeTableRow(x, y, COLUMN_WIDTH, height, PAPER, "Part " + romanize(i + 1));
+            x += COLUMN_WIDTH;
+        }
+        else {
+            writeTableRow(x, y, COLUMN_WIDTH, height, PAPER, "Postgraduate / Part " + romanize(i + 1));
+            x += COLUMN_WIDTH;
+        }
     }
 
     // Creating columns
@@ -189,12 +195,13 @@ function focusOnCourse(courseinfo) {
     addCourseInfoRow(rows[1], "Name", courseinfo.name);
     addCourseInfoRow(rows[2], "Type", courseinfo.compulsory == 1 ? "Compulsory" : "Elective");
     addCourseInfoRow(rows[3], "Description", courseinfo.description);
-    addCourseInfoRow(rows[4], "Academic Organization", courseinfo.academicOrg);
-    addCourseInfoRow(rows[5], "Academic Group", courseinfo.academicGroup);
-    addCourseInfoRow(rows[6], "Course Component", courseinfo.courseComp);
-    addCourseInfoRow(rows[7], "Grading Basis", courseinfo.gradingBasis);
-    addCourseInfoRow(rows[8], "Typically Offered", courseinfo.typeOffered);
-    addCourseInfoRow(rows[9], "Enrolment Requirements", courseinfo.remarks);
+    addCourseInfoRow(rows[4], "Points", courseinfo.points);
+    addCourseInfoRow(rows[5], "Academic Organization", courseinfo.academicOrg);
+    addCourseInfoRow(rows[6], "Academic Group", courseinfo.academicGroup);
+    addCourseInfoRow(rows[7], "Course Component", courseinfo.courseComp);
+    addCourseInfoRow(rows[8], "Grading Basis", courseinfo.gradingBasis);
+    addCourseInfoRow(rows[9], "Typically Offered", courseinfo.typeOffered);
+    addCourseInfoRow(rows[10], "Enrolment Requirements", courseinfo.remarks);
     //addCourseInfoRow(rows[10], "Prerequisite(s)", courseinfo.preReqString);
     //addCourseInfoRow(rows[11], "Restrictions(s)", courseinfo.restrString);
 
@@ -267,6 +274,18 @@ function addCourseInfoRow(table_row, item, desc) {
 //
 // Helper functions
 //
+
+function romanize(num) {
+    var lookup = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 }, roman = '', i;
+    for (i in lookup) {
+        while (num >= lookup[i]) {
+            roman += i;
+            num -= lookup[i];
+        }
+    }
+    return roman;
+}
+
 /**
  * Draws a line
  */

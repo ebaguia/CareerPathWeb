@@ -433,7 +433,6 @@
     <Compile Include="Controller\CommonInternals.cs" />
     <Compile Include="Controller\Course.cs" />
     <Compile Include="Controller\CoursePoint.cs" />
-    <Compile Include="Controller\CourseProgrammePart.cs" />
     <Compile Include="Controller\DatabaseConnection.cs" />
     <Compile Include="Controller\Programme.cs" />
     <Compile Include="Controller\Utils.cs" />

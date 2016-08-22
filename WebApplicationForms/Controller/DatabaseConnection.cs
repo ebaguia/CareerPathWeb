@@ -520,10 +520,10 @@ WHERE PreRequisite.FOLLOWID IN pre_req_courses";
             return courses;
         }
 
-        public List<Course> ReadCoursesUsingProgrammePart(string programmeId, string part)
+        public List<Course> ReadCoursesUsingProgrammePart(Programme programme, string part)
         {
             List<Course> courses = new List<Course>();
-            String readCoursesStatement = "SELECT COURSEID FROM CourseProgrammePart WHERE PROGRAMMEPARTID = '" + programmeId + "' AND PART = '" + part + "'";
+            String readCoursesStatement = "SELECT DISTINCT COURSEID FROM CourseProgrammePart WHERE PROGRAMMEPARTID = '" + programme.id + "' AND PART = '" + part + "' ORDER BY COURSEID";
 
             try
             {
