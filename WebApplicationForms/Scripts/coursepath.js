@@ -206,14 +206,6 @@ function focusOnCourse(courseinfo) {
     //addCourseInfoRow(rows[11], "Restrictions(s)", courseinfo.restrString);
 
     $('#courseInfoModal').modal('show');
-
-    // When the user clicks anywhere outside of the modal, close it
-    //
-    window.onclick = function (event) {
-        if (event.target == $('#courseInfoModal')) {
-            $('#courseInfoModal').modal('toggle');
-        }
-    }
 }
 
 /**

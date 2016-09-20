@@ -17,7 +17,6 @@
     <script src="Scripts/jquery-2.2.3.min.js"></script>
     <script src="Scripts/jquery-ui-1.11.4.js"></script>
     <script src="Scripts/jquery-ui-1.11.4.min.js"></script>
-    <script src="Scripts/draggable-modal.js"></script>
     <script src="Scripts/raphael-min.js"></script>
     <script src="Scripts/raphael.js"></script>
     <script src="Scripts/coursepath.js"></script>
