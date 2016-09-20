@@ -205,48 +205,8 @@ function focusOnCourse(courseinfo) {
     //addCourseInfoRow(rows[10], "Prerequisite(s)", courseinfo.preReqString);
     //addCourseInfoRow(rows[11], "Restrictions(s)", courseinfo.restrString);
 
-    $('#courseInfoModal').modal('show');
+    $('#courseInfoModal').modal({ backdrop: 'static', keyboard: false });
 }
-
-/**
- * Course Information dialog dragg functions --->
- **/
-var dragObject = null;
-var mouseOffset = null;
-function getMouseOffset(target, ev) {
-    ev = ev || window.event;
-    var docPos = getPosition(target);
-    var mousePos = mouseCoords(ev);
-    return { x: mousePos.x - docPos.x, y: mousePos.y - docPos.y };
-}
-function getPosition(e) {
-    var left = 0;
-    var top = 0;
-    while (e.offsetParent) {
-        left += e.offsetLeft;
-        top += e.offsetTop;
-        e = e.offsetParent;
-    }
-    left += e.offsetLeft;
-    top += e.offsetTop;
-    return { x: left, y: top };
-}
-function mouseMove(ev) {
-    ev = ev || window.event;
-    var mousePos = mouseCoords(ev);
-    if (dragObject) {
-        dragObject.style.position = 'absolute';
-        dragObject.style.top = mousePos.y - mouseOffset.y;
-        dragObject.style.left = mousePos.x - mouseOffset.x;
-        return false;
-    }
-}
-function mouseUp() {
-    dragObject = null;
-}
-/**
- * <--- Course Information dialog dragg functions
- **/
 
 /**
  * Adds row to the table in the Course Information dialog.
